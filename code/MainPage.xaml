@@ -7,7 +7,36 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="Azure">
 
+        <ListView HorizontalAlignment="Left" Height="980" Margin="10,10,0,0" VerticalAlignment="Top" Width="278">
+            <ListBox  BorderBrush="AliceBlue" SelectionChanged="ListBox_SelectionChanged">
+                12321321
+            </ListBox>
+            <ListBox>
+                12321321
+            </ListBox>
+            <ListBox>
+                12321321
+            </ListBox>
+            <ListBox>
+                12321321
+            </ListBox>
+            <ListBox>
+                12321321
+            </ListBox>
+            <ListBox>
+                12321321
+            </ListBox>
+            <ListBox>
+                12321321
+            </ListBox>
+            <ListBox>
+                12321321
+            </ListBox>
+            <ListBox>
+                12321321
+            </ListBox>
+        </ListView>
     </Grid>
 </Page>
