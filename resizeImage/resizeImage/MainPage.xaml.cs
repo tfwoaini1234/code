@@ -31,6 +31,7 @@ namespace resizeImage
     public sealed partial class MainPage : Page
     {
         private StorageFile _inputFile;
+        private StorageFolder _folder;
         public MainPage()
         {
             this.InitializeComponent();
@@ -51,6 +52,7 @@ namespace resizeImage
             p.FileTypeFilter.Add(".jpg");
             p.FileTypeFilter.Add(".png");
             StorageFolder folder = await p.PickSingleFolderAsync();
+            _folder = folder;
             Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
 
             Windows.Storage.StorageFile sampleFile = await folder.CreateFileAsync("sample.txt", Windows.Storage.CreationCollisionOption.ReplaceExisting);
@@ -92,6 +94,9 @@ namespace resizeImage
             p.FileTypeFilter.Add(".jpg");
             p.FileTypeFilter.Add(".png");
             StorageFolder folder = await p.PickSingleFolderAsync();
+            _folder = folder;
+            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile sampleFile = await folder.CreateFileAsync("sample.txt", Windows.Storage.CreationCollisionOption.ReplaceExisting);
             IReadOnlyList<StorageFile> fileList = await folder.GetFilesAsync();
 
             return fileList;
@@ -136,8 +141,28 @@ namespace resizeImage
                 if (file != null)   //文件不为空则进行下一步
                 {
                     _inputFile = file;
-                    await LoadFileAsync(file);
+                    await resizeImage(file);
                 }
+            }
+        }
+
+        private async Task resizeImage(StorageFile file) {
+            try
+            {
+                // 显示图片
+                BitmapImage src = new BitmapImage();
+                using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read))
+                {
+                    await src.SetSourceAsync(stream);
+                }
+                MyImage.Source = src;
+                string newFileName = "resize-"+file.Name;
+                Windows.Storage.StorageFile sampleFile = await _folder.CreateFileAsync(newFileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+                await LoadSaveFileAsync(file, sampleFile);
+            }
+            catch (Exception err)
+            {
+                Debug.WriteLine(err.Message);
             }
         }
 
